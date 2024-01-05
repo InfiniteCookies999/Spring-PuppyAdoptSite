@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "web_user")
 @Getter
@@ -35,6 +38,9 @@ public class WebUser {
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private EmailVerification emailVerification;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<AdoptPost> adoptPosts = new ArrayList<>();
 
     public WebUser(String email, String password, String firstName, String lastName) {
         this.email = email;

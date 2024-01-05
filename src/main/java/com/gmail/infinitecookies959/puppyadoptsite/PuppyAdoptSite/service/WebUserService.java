@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
+import java.util.Optional;
 
 @Service
 public class WebUserService implements UserDetailsService {
@@ -28,6 +29,10 @@ public class WebUserService implements UserDetailsService {
         this.repository = repository;
         this.emailVerificationService = emailVerificationService;
         this.passwordEncoder = passwordEncoder;
+    }
+
+    public Optional<WebUser> getUser(UserDetails details) {
+        return repository.findUserByEmailIgnoreCase(details.getUsername());
     }
 
     /**

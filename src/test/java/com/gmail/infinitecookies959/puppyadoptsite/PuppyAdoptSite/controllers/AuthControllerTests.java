@@ -1,6 +1,5 @@
 package com.gmail.infinitecookies959.puppyadoptsite.PuppyAdoptSite.controllers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gmail.infinitecookies959.puppyadoptsite.PuppyAdoptSite.TestWebUserFactory;
 import com.gmail.infinitecookies959.puppyadoptsite.PuppyAdoptSite.exceptions.EmailTakenException;
 import com.gmail.infinitecookies959.puppyadoptsite.PuppyAdoptSite.models.entity.WebUser;
@@ -30,9 +29,6 @@ public class AuthControllerTests {
 
     @Autowired
     private MockMvc mockMvc;
-
-    @Autowired
-    private ObjectMapper objectMapper;
 
     @MockBean
     private WebUserService webUserService;
@@ -107,7 +103,7 @@ public class AuthControllerTests {
     }
 
     @Test
-    public void verifyEmailTokenRedirectsHome() throws Exception {
+    public void verifyEmailTokenRedirectsSuccessVerification() throws Exception {
 
         doNothing().when(emailVerificationService).verifyUser(any());
 

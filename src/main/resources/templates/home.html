@@ -5,5 +5,93 @@
     <title>Home Page</title>
 </head>
 <body>
-Home page!
+    <div class="container">
+        <div class="row">
+            <div class="col-md-2">
+                <form th:action="@{/home?page=1}" action="get">
+                    <div class="form-group mb-3">
+                        <label for="breedSelect">Puppy's Breed</label>
+                        <select name="breed" class="form-control" id="breedSelect">
+                            <option value="any">Any</option>
+                            <option th:each="breed : ${breadValues}" th:value="${breed.replaceAll(' ', '-')}"
+                                    th:text="${breed}"
+                                    th:selected="${selectedBreed == breed.toLowerCase()}">
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="ageSelect">Puppy less or equal than month old</label>
+                        <input name="age" id="ageSelect" class="form-control" type="number" placeholder="Age in months"
+                               th:value="${param.age}"/>
+                    </div>
+                    <button id="submit" type="submit" class="btn btn-primary">Search</button>
+                </form>
+            </div>
+            <div class="col-md-10">
+                <div class="container">
+                    <!-- Displaying the posts -->
+                    <div class="row">
+                        <div class="container">
+                            <div class="row row-cols-2 row-cols-lg-4 g-2 g-lg-3">
+                                <th:block th:each="post: ${posts}">
+                                    <div class="col"
+                                         th:with="shortDescription=${post.description.length() > 50}
+                                                   ? ${post.description.substring(0, 50)} + '...'
+                                                   : ${post.description}">
+                                        <div class=" card p-3">
+                                            <img class="card-img-top"
+                                                 height="230"
+                                                 th:src="@{/images/puppy/} + ${post.imageName}">
+                                            <div class="card-body">
+                                                <h5>[[${post.puppyName}]]</h5>
+                                                <p>[[${shortDescription}]]</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </th:block>
+                                <th:block th:if="${posts.size() != pageSize}"
+                                          th:each="i : ${#numbers.sequence(posts.size(), pageSize-1)}">
+                                    <div class="col">
+                                        <div class=" card p-3">
+                                            <img class="card-img-top"
+                                                 height="270"
+                                                 th:src="@{/images/puppy/} + 'placeholder.png'">
+                                            <div class="card-body">
+                                                <h5></h5>
+                                                <p></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </th:block>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Displaying page selection -->
+                    <div class="row mt-3">
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination" id="pagination-pages"
+                                th:with="startIdx=${T(java.lang.Math).max(pageNumber - 1, 1)},
+                         endIdx=${T(java.lang.Math).min(startIdx + 6, numPages>0 ? numPages : 1)}">
+                                <li class="page-item" th:classappend="${pageNumber == 1}?disabled">
+                                    <a class="page-link" th:href="${baseUrl.replace('page='+pageNumber, 'page='+(pageNumber-1))}">Previous</a>
+                                </li>
+                                <th:block th:each="i : ${#numbers.sequence(startIdx, endIdx)}">
+                                    <li class="page-item">
+                                        <a class="page-link"
+                                           th:href="${baseUrl.replace('page='+pageNumber, 'page='+i)}"
+                                           th:classappend="${i==pageNumber}?disabled"
+                                        >[[${i}]]</a>
+                                    </li>
+                                </th:block>
+                                <li th:if="${numPages > 6}" class="page-link disabled">...</a></li>
+                                <li class="page-item" th:classappend="${pageNumber >= numPages}?disabled">
+                                    <a class="page-link" th:href="${baseUrl.replace('page='+pageNumber, 'page='+(pageNumber+1))}">Next</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>

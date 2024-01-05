@@ -42,7 +42,8 @@ public class SecurityConfig {
                                         "/please-verify",
                                         "/verify",
                                         "/successful-verification",
-                                        "/home").permitAll()
+                                        "/", "/home",
+                                        "/images/**").permitAll()
                                 .anyRequest().hasRole("USER")
                 )
                 .formLogin(
