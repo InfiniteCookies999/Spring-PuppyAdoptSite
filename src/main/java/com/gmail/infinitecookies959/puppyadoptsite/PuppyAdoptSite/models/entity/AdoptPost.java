@@ -30,8 +30,12 @@ public class AdoptPost {
     @Column(nullable = false)
     private PuppyBreed breed;
 
-    @Column(name = "image_name", nullable = false)
-    private String imageName;
+    @Lob
+    @Column(name = "image_of_puppy", nullable = false)
+    private byte[] imageOfPuppy;
+
+    @Column(name = "image_of_puppy_name")
+    private String imageOfPuppyName;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id", nullable = false)

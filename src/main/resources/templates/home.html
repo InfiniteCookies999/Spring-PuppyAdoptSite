@@ -41,7 +41,7 @@
                                         <div class=" card p-3">
                                             <img class="card-img-top"
                                                  height="230"
-                                                 th:src="@{/images/puppy/} + ${post.imageName}">
+                                                 th:src="@{/images/puppy/} + ${post.id}">
                                             <div class="card-body">
                                                 <h5>[[${post.puppyName}]]</h5>
                                                 <p>[[${shortDescription}]]</p>
@@ -55,7 +55,7 @@
                                         <div class=" card p-3">
                                             <img class="card-img-top"
                                                  height="270"
-                                                 th:src="@{/images/puppy/} + 'placeholder.png'">
+                                                 th:src="'invalid.png'">
                                             <div class="card-body">
                                                 <h5></h5>
                                                 <p></p>

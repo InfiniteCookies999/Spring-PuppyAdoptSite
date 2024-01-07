@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+<head>
+    <meta charset="UTF-8">
+    <title>New Adoption Post</title>
+</head>
+<body>
+<div class="container">
+    <div class="col-md-8 offset-md-2">
+        <form th:action="@{/new-post}" th:object="${postBody}" method="post" enctype="multipart/form-data">
+            <div class="form-group mb-3">
+                <label for="nameInput">Puppy's Name</label>
+                <input id="nameInput" th:field="*{puppyName}" class="form-control" type="text" placeholder="Enter the puppy's name" />
+                <label th:if="${#fields.hasErrors('puppyName')}" th:errors="*{puppyName}" style="color:red;"></label>
+            </div>
+            <div class="form-group mb-3">
+                <label for="ageInput">Puppy's Age</label>
+                <input id="ageInput" th:field="*{puppyAge}" class="form-control" type="text" placeholder="Enter the puppy's age" />
+                <label th:if="${#fields.hasErrors('puppyAge')}" th:errors="*{puppyAge}" style="color:red;"></label>
+            </div>
+            <div class="form-group mb-3">
+                <label for="BreedSelect">Puppy's Breed</label>
+                <select name="breed" class="form-control" id="breedSelect" th:field="*{breed}">
+                    <option th:each="breed : ${breadValues}" th:value="${breed.replaceAll(' ', '_').toUpperCase()}"
+                            th:text="${breed}">
+                    </option>
+                </select>
+                <label th:if="${#fields.hasErrors('breed')}" th:errors="*{breed}" style="color:red;"></label>
+            </div>
+            <div class="form-group mb-3">
+                <label for="pictureInput">Picture of Puppy</label><br>
+                <input type="file" th:field="*{puppyImage}" class="form-control-file" id="pictureInput">
+                <label th:if="${#fields.hasErrors('puppyImage')}" th:errors="*{puppyImage}" style="color:red;"></label>
+            </div>
+            <div class="form-group mb-3">
+                <label for="descriptionTextarea">Puppy's Description</label>
+                <textarea th:field="*{description}" id="descriptionTextarea" class="form-control" rows="4"></textarea>
+                <label th:if="${#fields.hasErrors('description')}" th:errors="*{description}" style="color:red;"></label>
+            </div>
+            <button type="submit" class="btn btn-primary" id="submit-button">Submit</button>
+        </form>
+    </div>
+</div>
+</body>

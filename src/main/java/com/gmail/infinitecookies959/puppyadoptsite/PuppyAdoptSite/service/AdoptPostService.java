@@ -1,14 +1,19 @@
 package com.gmail.infinitecookies959.puppyadoptsite.PuppyAdoptSite.service;
 
 import com.gmail.infinitecookies959.puppyadoptsite.PuppyAdoptSite.models.PuppyBreed;
+import com.gmail.infinitecookies959.puppyadoptsite.PuppyAdoptSite.models.dto.AdoptPostBody;
 import com.gmail.infinitecookies959.puppyadoptsite.PuppyAdoptSite.models.entity.AdoptPost;
+import com.gmail.infinitecookies959.puppyadoptsite.PuppyAdoptSite.models.entity.WebUser;
 import com.gmail.infinitecookies959.puppyadoptsite.PuppyAdoptSite.repository.AdoptPostRepository;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AdoptPostService {
@@ -19,6 +24,34 @@ public class AdoptPostService {
 
     public AdoptPostService(AdoptPostRepository repository) {
         this.repository = repository;
+    }
+
+    public Optional<AdoptPost> getAdoptPost(Long postId) {
+        return repository.findById(postId);
+    }
+
+    /**
+     * Converts a {@code AdoptPostBody} to a database entity and saves it
+     * into the database.
+     *
+     * @param user an authenticated user that is creating a post.
+     * @param body the contents of the post.
+     * @throws IOException if there is an issue reading the bytes of the uploaded
+     *                     puppy file.
+     */
+    public void createNewPost(WebUser user, AdoptPostBody body) throws IOException {
+        AdoptPost adoptPost = new AdoptPost();
+        adoptPost.setPuppyName(body.getPuppyName());
+        adoptPost.setPuppyAge(body.getPuppyAge());
+        adoptPost.setBreed(body.getBreed());
+        adoptPost.setDescription(body.getDescription());
+        adoptPost.setUser(user);
+
+        MultipartFile puppyImage = body.getPuppyImage();
+        adoptPost.setImageOfPuppy(puppyImage.getBytes());
+        adoptPost.setImageOfPuppyName(puppyImage.getOriginalFilename());
+
+        repository.save(adoptPost);
     }
 
     /**
@@ -101,5 +134,4 @@ public class AdoptPostService {
 
         return (int) Math.ceil(count / (double) PAGE_SIZE);
     }
-
 }

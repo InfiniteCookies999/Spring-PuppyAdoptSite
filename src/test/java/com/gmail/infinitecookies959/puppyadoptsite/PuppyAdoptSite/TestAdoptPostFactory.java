@@ -12,7 +12,8 @@ public class TestAdoptPostFactory {
         adoptPost.setUser(user);
         adoptPost.setDescription("Description");
         adoptPost.setPuppyAge(age);
-        adoptPost.setImageName("image_path.png");
+        adoptPost.setImageOfPuppyName("image.png");
+        adoptPost.setImageOfPuppy(new byte[]{});
         adoptPost.setBreed(breed);
         return adoptPost;
     }

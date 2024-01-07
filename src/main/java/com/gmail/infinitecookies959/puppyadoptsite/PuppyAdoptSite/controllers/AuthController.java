@@ -42,7 +42,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public String register(@ModelAttribute("registrationBody") @Valid RegistrationBody registrationBody,
+    public String register(@ModelAttribute @Valid RegistrationBody registrationBody,
                            BindingResult bindingResult,
                            Model model) {
         model.addAttribute("registrationBody", registrationBody);

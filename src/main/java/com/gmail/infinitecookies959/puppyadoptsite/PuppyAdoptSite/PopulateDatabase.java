@@ -6,11 +6,16 @@ import com.gmail.infinitecookies959.puppyadoptsite.PuppyAdoptSite.models.entity.
 import com.gmail.infinitecookies959.puppyadoptsite.PuppyAdoptSite.models.entity.WebUser;
 import com.gmail.infinitecookies959.puppyadoptsite.PuppyAdoptSite.repository.AdoptPostRepository;
 import com.gmail.infinitecookies959.puppyadoptsite.PuppyAdoptSite.service.WebUserService;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.util.ResourceUtils;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.Random;
 
 @Configuration
@@ -39,6 +44,16 @@ public class PopulateDatabase {
                     webUserService.loadUserByUsername("infinitecookies959@gmail.com")).get();
             user.setVerified(true);
 
+            File file = ResourceUtils.getFile("src/main/resources/static/placeholder.png");
+
+            byte[] image;
+            try (FileInputStream stream = new FileInputStream(file)) {
+                image = stream.readAllBytes();
+            } catch (IOException e) {
+                e.printStackTrace();
+                return;
+            }
+
             Random random = new Random();
             PuppyBreed[] breeds = PuppyBreed.values();
             for (int i = 0; i < 200; i++) {
@@ -47,7 +62,8 @@ public class PopulateDatabase {
                 post.setDescription("This is a description for the pet");
                 post.setPuppyAge(4);
                 post.setBreed(breeds[random.nextInt(breeds.length)]);
-                post.setImageName("placeholder.png");
+                post.setImageOfPuppy(image);
+                post.setImageOfPuppyName("placeholder.png");
                 post.setUser(user);
                 adoptPostRepository.save(post);
             }*/

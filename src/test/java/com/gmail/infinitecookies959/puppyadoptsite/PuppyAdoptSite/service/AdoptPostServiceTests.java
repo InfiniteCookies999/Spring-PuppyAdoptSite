@@ -1,7 +1,10 @@
 package com.gmail.infinitecookies959.puppyadoptsite.PuppyAdoptSite.service;
 
+import com.gmail.infinitecookies959.puppyadoptsite.PuppyAdoptSite.TestWebUserFactory;
 import com.gmail.infinitecookies959.puppyadoptsite.PuppyAdoptSite.models.PuppyBreed;
+import com.gmail.infinitecookies959.puppyadoptsite.PuppyAdoptSite.models.dto.AdoptPostBody;
 import com.gmail.infinitecookies959.puppyadoptsite.PuppyAdoptSite.models.entity.AdoptPost;
+import com.gmail.infinitecookies959.puppyadoptsite.PuppyAdoptSite.models.entity.WebUser;
 import com.gmail.infinitecookies959.puppyadoptsite.PuppyAdoptSite.repository.AdoptPostRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,12 +15,15 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class AdoptPostServiceTests {
@@ -27,6 +33,32 @@ public class AdoptPostServiceTests {
 
     @InjectMocks
     private AdoptPostService adoptPostService;
+
+    @Test
+    public void createNewPostSavesPost() throws IOException {
+
+        MockMultipartFile mockFile = new MockMultipartFile(
+                "puppyImage",
+                "file.txt",
+                MediaType.TEXT_PLAIN_VALUE,
+                "contents".getBytes()
+        );
+
+        WebUser user = TestWebUserFactory.getUser("Maddie");
+        AdoptPostBody body = new AdoptPostBody();
+        body.setPuppyName("Paco");
+        body.setBreed(PuppyBreed.SCHNAUZER);
+        body.setPuppyAge(4);
+        body.setDescription("This is the description");
+        body.setPuppyImage(mockFile);
+
+        when(adoptPostRepository.save(any())).thenReturn(any());
+
+        adoptPostService.createNewPost(user, body);
+
+        verify(adoptPostRepository, times(1)).save(any());
+
+    }
 
     @Test
     public void parsePuppyBreedReturnsParsedBreed() {
